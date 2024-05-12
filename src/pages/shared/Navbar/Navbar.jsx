@@ -2,12 +2,37 @@ import { Link } from "react-router-dom"
 import logo from '../../../assets/logo.svg'
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { CiSearch } from "react-icons/ci";
+import { useContext } from "react";
+import { AuthContext } from "../../../providers/AuthProvider";
 
 const Navbar = () => {
+
+    const { user, logOut } = useContext(AuthContext)
+
+    const handleLogOut = () => {
+        logOut()
+            .then(() => { })
+            .catch(error => console.log(error))
+    }
+
+
     const navItems = <>
         <li><Link to="/">Home</Link> </li>
         <li> <Link to="/about">About</Link> </li>
+
+        {user ?.email?
+            <>
+              <li> <Link to="/bookings">Bookings</Link> </li>
+             <li><button onClick={handleLogOut}>LogOut</button></li>
+            </>
+            :
+
+            <li><Link to="/signIn"><button>SignIn</button></Link></li>
+
+        }
+
     </>
+  
     return (
         <div className="navbar bg-base-100 mb-4  mt-8">
             <div className="navbar-start">
@@ -33,7 +58,7 @@ const Navbar = () => {
                     <HiOutlineShoppingBag></HiOutlineShoppingBag>
                     <CiSearch className="text-lg"></CiSearch>
                 </div>
-               
+
                 <div>
                     <button className="btn btn-outline text-[#FF3811] hover:bg-gray-900">Appointment</button>
                 </div>
